@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reszponzív Galéria</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="gallery"></div>
+
+<div class="modal" id="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="modal-img">
+</div>
+<div class="footer">
+    <p class="footer-text">MATEMATIKA ÉRETTSÉGI FELADATOK</p>
+</div>
+
+<script>
+    const images = ['kepek/f0.png','kepek/f1.png', 'kepek/f2.png', 'kepek/f3.png','kepek/f4.png','kepek/f5.png','kepek/f6.png','kepek/f7.png','kepek/f8.png','kepek/f9.png','kepek/f10.png','kepek/f11.png','kepek/f12.png'];
+    const solutions = ['kepek/f0m.png','kepek/f1m.png', 'kepek/f2m.png', 'kepek/f3m.png','kepek/f4m.png','kepek/f5m.png','kepek/f6m.png','kepek/f7m.png','kepek/f8m.png','kepek/f9m.png','kepek/f10m.png','kepek/f11m.png','kepek/f12m.png'];
+    const totalImages = images.length; 
+
+    const gallery = document.querySelector('.gallery');
+
+    images.forEach((image, index) => {
+        const galleryItem = document.createElement('div');
+        galleryItem.classList.add('gallery-item');
+
+        const img = document.createElement('img');
+        img.src = image;
+        img.alt = 'Kép';
+        galleryItem.appendChild(img);
+
+        const divCounter = document.createElement('div'); 
+        divCounter.classList.add('counter'); 
+
+        const span = document.createElement('span');
+        span.classList.add('image-number');
+        span.textContent = `${index + 1}/${totalImages}`;
+        divCounter.appendChild(span); 
+        galleryItem.appendChild(divCounter); 
+
+        const overlay = document.createElement('div');
+        overlay.classList.add('overlay');
+
+        const overlayContent = document.createElement('div');
+        overlayContent.classList.add('overlay-content');
+
+        const button = document.createElement('button');
+        button.textContent = `Megnyitás`; 
+        button.onclick = function() {
+            openModal(image);
+        };
+        overlayContent.appendChild(button);
+
+        const solutionButton = document.createElement('button');
+        solutionButton.textContent = 'Megoldás';
+        solutionButton.onclick = function() {
+            openSolution(image);
+        };
+        overlayContent.appendChild(solutionButton);
+
+        overlay.appendChild(overlayContent);
+        galleryItem.appendChild(overlay);
+
+        gallery.appendChild(galleryItem);
+    });
+
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modal-img');
+
+    function openModal(image) {
+        modal.style.display = 'block';
+        modalImg.src = image;
+    }
+
+    function openSolution(image) {
+    modal.style.display = 'block';
+    if (image.startsWith("kepek/f")) {
+        const index = images.indexOf(image);
+        const solutionImage = solutions[index];
+        modalImg.src = solutionImage;
+    }
+}
+
+    function closeModal() {
+        modal.style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        if (event.target === modal) {
+            closeModal();
+        }
+    };
+</script>
+
+</body>
+</html>
